@@ -3,13 +3,15 @@ FROM python:3-alpine
 ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
-# Actualizar los paquetes e instalar las dependencias necesarias
-RUN apk update && apk add --no-cache gcc musl-dev postgresql-dev python3-dev libffi-dev
+RUN pip install Django==4.0.4
+RUN pip install gunicorn==20.1.0
+RUN pip install psycopg2==2.9.3
+RUN pip install python-dotenv==0.21.0
+RUN pip install whitenoise==6.2.0
+RUN pip install pytesseract==0.3.10
+RUN pip install numpy==1.26.4
+RUN pip install opencv-python==4.9.0.80
 
-# Actualizar pip e instalar las dependencias del archivo requirements.txt
-COPY ./requirements.txt ./
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
 
 # Copiar el resto de los archivos al contenedor
 COPY ./ ./
