@@ -1,6 +1,21 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .utils import scanTexto_func
+from .scanTexto.utils import scanTexto_func
+from .forms import ImageUploadForm
+
+
+def upload_image(request):
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.cleaned_data['image']
+            extracted_text = scanTexto_func(image)
+            return render(request, 'result.html', {'extracted_text': extracted_text})
+    else:
+        form = ImageUploadForm()
+    
+    return render(request, 'upload_image.html', {'form': form})
+
 
 def extract_text_from_image(request):
     if request.method == 'POST':
