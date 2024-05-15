@@ -1,4 +1,6 @@
-import cv2
+import skimage.io
+import skimage.color
+import skimage.filters
 import pytesseract
 
 def scanTexto_func(imagePath):
@@ -12,18 +14,14 @@ def scanTexto_func(imagePath):
         str: El texto extraído de la imagen.
     """
 
-    # Cargar la imagen
-    img = cv2.imread(imagePath)
-
-    # Compruebe si la imagen se leyó correctamente.
-    if img is None:
-        raise Exception("Error loading image: {}".format(imagePath))
+    # Cargar la imagen utilizando scikit-image
+    img = skimage.io.imread(imagePath)
 
     # Convertir la imagen a escala de grises
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = skimage.color.rgb2gray(img)
 
-    # Aplicar umbrales para convertir a una imagen binaria
-    threshold_img = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+    # Aplicar umbralización para convertir a una imagen binaria
+    threshold_img = gray > skimage.filters.threshold_otsu(gray)
 
     # Establecer la ruta de Tesseract
     pytesseract.pytesseract.tesseract_cmd = r'C:/Archivos de programa/Tesseract-OCR/tesseract.exe'
@@ -36,6 +34,5 @@ def scanTexto_func(imagePath):
 
     # Devolver el texto extraído
     return text
-
 
 
