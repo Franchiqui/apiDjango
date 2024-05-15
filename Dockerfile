@@ -9,6 +9,8 @@ RUN pip install psycopg2-binary
 RUN pip install python-dotenv==0.21.0
 RUN pip install numpy matplotlib
 RUN pip install whitenoise
+RUN pip install --timeout 300 scikit-image
+
 
 
 # Copiar el resto de los archivos al contenedor
