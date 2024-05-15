@@ -8,7 +8,7 @@ RUN pip install gunicorn==20.1.0
 RUN pip install psycopg2-binary
 RUN pip install python-dotenv==0.21.0
 RUN pip install whitenoise==6.2.0
-RUN pip install scikit-image
+RUN pip install --timeout 300 scikit-image
 RUN pip install numpy matplotlib
 
 # Copiar el resto de los archivos al contenedor
