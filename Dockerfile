@@ -9,7 +9,6 @@ RUN pip install psycopg2-binary
 RUN pip install python-dotenv==0.21.0
 RUN pip install numpy matplotlib
 RUN pip install whitenoise
-RUN pip install skimage
 
 
 
