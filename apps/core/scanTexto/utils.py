@@ -34,5 +34,3 @@ def scanTexto_func(imagePath):
 
     # Devolver el texto extraído
     return text
-
-
