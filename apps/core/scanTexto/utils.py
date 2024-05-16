@@ -1,9 +1,8 @@
-import skimage.io
-import skimage.color
-import skimage.filters
+import cv2
 import pytesseract
 
-def scanTexto_func(imagePath):
+def scanTexto_func(UploadFile: str, task="original", **kwargs):
+
     """
     Extrae texto de una imagen y lo devuelve como cadena.
 
@@ -14,23 +13,28 @@ def scanTexto_func(imagePath):
         str: El texto extraído de la imagen.
     """
 
-    # Cargar la imagen utilizando scikit-image
-    img = skimage.io.imread(imagePath)
+    # Cargar la imagen
+    img = cv2.imread(UploadFile)
 
-    # Convertir la imagen a escala de grises
-    gray = skimage.color.rgb2gray(img)
+    # Compruebe si la imagen se leyó correctamente.
+    if img is None:
+        raise Exception("Error loading image: {}".format(UploadFile))
 
-    # Aplicar umbralización para convertir a una imagen binaria
-    threshold_img = gray > skimage.filters.threshold_otsu(gray)
-
+    # Aplicar el preprocesamiento de la imagen según la tarea
+    if task == "original":
+        processed_img = img
+    elif task == "grayscale":
+        processed_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    else:
+        # ... (Implementar preprocesamiento para otras tareas)
+        pass
+    
     # Establecer la ruta de Tesseract
     pytesseract.pytesseract.tesseract_cmd = r'C:/Archivos de programa/Tesseract-OCR/tesseract.exe'
 
     # Establecer el idioma del texto
-    text = pytesseract.image_to_string(img, config='--psm 10 lang=es')
-
-    # Extraer texto usando pytesseract
-    text = pytesseract.image_to_string(threshold_img)
+    text = pytesseract.image_to_string(processed_img, config='--psm 10 lang=es')
 
     # Devolver el texto extraído
     return text
+
