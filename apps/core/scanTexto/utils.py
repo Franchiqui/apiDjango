@@ -1,5 +1,7 @@
 import cv2
 import pytesseract
+from views import *
+
 
 def scanTexto_func(UploadFile: str, task="original", **kwargs):
 
